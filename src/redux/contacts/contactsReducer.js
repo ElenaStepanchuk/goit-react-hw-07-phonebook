@@ -1,8 +1,17 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import { fetchContacts } from './contactsOperations';
+import { add, remove, filtered } from '../contacts/contactsAction';
 
 const entities = createReducer([], {
   [fetchContacts.fulfilled]: (_, action) => action.payload,
+  [add]: (state, action) => {
+    return [...Object.values(state), action.payload];
+  },
+  [remove]: (state, action) => {
+    return Object.values(state).filter(
+      contact => contact.id !== action.payload
+    );
+  },
 });
 const isLoading = createReducer(false, {
   [fetchContacts.pending]: () => true,
@@ -17,4 +26,10 @@ export default combineReducers({
   entities,
   isLoading,
   error,
+});
+
+export const filterReducer = createReducer('', {
+  [filtered]: (_, action) => {
+    return action.payload;
+  },
 });

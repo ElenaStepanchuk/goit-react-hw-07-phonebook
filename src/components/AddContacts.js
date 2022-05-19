@@ -5,6 +5,7 @@ import ContactsList from './ContactsList';
 import Filter from './Filter';
 import { useSelector, useDispatch } from 'react-redux';
 import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import { add, remove } from '../redux/contacts/contactsAction';
 
 const AddContacts = () => {
   const dispatch = useDispatch();
@@ -22,20 +23,16 @@ const AddContacts = () => {
 
   const filterInputId = nanoid();
   const formSubmitHandler = (name, number) => {
-    //   if (
-    //     contacts.find(
-    //       contact => contact.name.toLowerCase() === name.toLowerCase()
-    //     )
-    //   ) {
-    //     alert(`${name} is already in contacts.`);
-    //   } else {
-    //     const contact = {
-    //       name,
-    //       number,
-    //       id: nanoid(),
-    //     };
-    //     setContacts(prevState => [...prevState, contact]);
-    //   }
+    const normalizedName = name.toLowerCase();
+    const addContacts = Object.values(contacts).find(contact => {
+      if (contact.name)
+        return contact.name.toLowerCase().includes(normalizedName);
+    });
+    if (addContacts) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+    dispatch(add({ id: nanoid(), name, number }));
   };
   const handleFilter = event => {
     setFilter(event.currentTarget.value);
@@ -47,9 +44,7 @@ const AddContacts = () => {
     );
   };
   const handleDelContact = contactId => {
-    // setContacts(prevState =>
-    //   prevState.filter(contact => contact.id !== contactId)
-    // );
+    dispatch(remove(contactId));
   };
   return (
     <>
