@@ -1,7 +1,6 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import { fetchContacts } from './contactsOperations';
 import { add, remove, filtered } from '../contacts/contactsAction';
-
 const entities = createReducer([], {
   [fetchContacts.fulfilled]: (_, action) => action.payload,
   [add]: (state, action) => {
@@ -22,14 +21,11 @@ const error = createReducer(null, {
   [fetchContacts.rejected]: (_, action) => action.payload,
   [fetchContacts.pending]: () => null,
 });
+export const filterReducer = createReducer(``, {
+  [filtered]: (_, action) => action.payload,
+});
 export default combineReducers({
   entities,
   isLoading,
   error,
-});
-
-export const filterReducer = createReducer('', {
-  [filtered]: (_, action) => {
-    return action.payload;
-  },
 });
