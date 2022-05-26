@@ -1,16 +1,25 @@
 import React from 'react';
 import ContactListItem from './ContactListItem';
+import { useEffect } from 'react';
 import css from './ContactsList.module.css';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { remove } from '../redux/contacts/contactsAction';
-import { contactsSelectors } from 'redux/contacts';
+// import { contactsOperations } from 'redux/contacts';
+import { allContacts } from 'redux/contacts/contactsOperations';
+import { fetchRemoveContacts } from '../redux/contacts/contactsAction';
+// import { remove } from '../redux/contacts/contactsAction';
+// import { contactsSelectors } from 'redux/contacts';
 const ContactsList = () => {
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(allContacts());
+  }, [dispatch]);
+
   const filter = useSelector(state => state.filter);
-  const contacts = useSelector(contactsSelectors.getContacts);
+  const contacts = useSelector(state => state.contacts.entities);
   const handleDelContact = contactId => {
-    dispatch(remove(contactId));
+    // dispatch(contactsOperations.removeContacts(contactId));
+    dispatch(fetchRemoveContacts(contactId));
   };
   return (
     <ul className={css.contact__list}>
@@ -25,7 +34,7 @@ const ContactsList = () => {
               id={id}
               name={name}
               number={number}
-              onDelContact={handleDelContact}
+              onDelContact={() => handleDelContact(id)}
             />
           </li>
         ))}
