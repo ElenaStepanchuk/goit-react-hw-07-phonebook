@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { useSelector, useDispatch } from 'react-redux';
 import { filtered } from 'redux/contacts/contactsAction';
+import { getFilter } from 'redux/contacts/contactsSelector';
 const Filter = () => {
-  const value = useSelector(state => state.filter);
+  const value = useSelector(getFilter);
   const id = nanoid();
   const filterInputId = nanoid();
   const dispatch = useDispatch();

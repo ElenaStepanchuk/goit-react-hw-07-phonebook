@@ -4,22 +4,17 @@ import { useEffect } from 'react';
 import css from './ContactsList.module.css';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-// import { contactsOperations } from 'redux/contacts';
-import { allContacts } from 'redux/contacts/contactsOperations';
-import { fetchRemoveContacts } from '../redux/contacts/contactsAction';
-// import { remove } from '../redux/contacts/contactsAction';
-// import { contactsSelectors } from 'redux/contacts';
+import { allContacts, removeContact } from 'redux/contacts/contactsOperations';
+import { getFilter, getContacts } from 'redux/contacts/contactsSelector';
 const ContactsList = () => {
   const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
+  const contacts = useSelector(getContacts);
   useEffect(() => {
     dispatch(allContacts());
   }, [dispatch]);
-
-  const filter = useSelector(state => state.filter);
-  const contacts = useSelector(state => state.contacts.entities);
   const handleDelContact = contactId => {
-    // dispatch(contactsOperations.removeContacts(contactId));
-    dispatch(fetchRemoveContacts(contactId));
+    dispatch(removeContact(contactId));
   };
   return (
     <ul className={css.contact__list}>

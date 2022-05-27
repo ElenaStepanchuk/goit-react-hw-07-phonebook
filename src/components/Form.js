@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import css from './Form.module.css';
 import PropTypes from 'prop-types';
-import { contactsOperations } from 'redux/contacts';
+// import { contactsOperations } from 'redux/contacts';
+import { addContact } from 'redux/contacts/contactsOperations';
 import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/contacts/contactsSelector';
 const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   let nameInputId = nanoid();
   let numberInputId = nanoid();
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.entities);
-  const handleInputChange = event => {
-    const { name, value } = event.currentTarget;
+  const contacts = useSelector(getContacts);
+  const handleInputChange = ({ target: { name, value } }) => {
     switch (name) {
       case 'name':
         setName(value);
@@ -21,7 +22,7 @@ const Form = () => {
         setNumber(value);
         break;
       default:
-        return;
+        break;
     }
   };
   const formSubmitHandler = (name, number) => {
@@ -34,12 +35,7 @@ const Form = () => {
       alert(`${name} is already in contacts.`);
       return;
     }
-    dispatch(
-      contactsOperations.addContacts({
-        name,
-        number,
-      })
-    );
+    dispatch(addContact({ name, number }));
   };
   const handleSubmit = event => {
     event.preventDefault();
