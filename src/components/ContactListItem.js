@@ -13,7 +13,6 @@ const ContactListItem = ({ name, number, onDelContact }) => {
 };
 export default ContactListItem;
 ContactListItem.protoTypes = {
-  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
   onDelContact: PropTypes.func.isRequired,
